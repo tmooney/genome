@@ -174,14 +174,24 @@ sub lift_over {
         die $self->error_message('LiftOver failed: ' . $lift_over_cmd->error_message);
     }
 
+    my $sorted_bed = Genome::Sys->create_temp_file_path();
     my $sort_cmd = Genome::Model::Tools::Joinx::Sort->create(
         input_files => [$lifted_bed],
-        output_file => $destination_bed,
+        output_file => $sorted_bed,
     );
     unless($sort_cmd->execute) {
         $self->fatal_message('Failed to sort lifted bed.');
     }
 
+    my $merge_cmd = Genome::Model::Tools::BedTools::Merge->create(
+        input_file => $sorted_bed,
+        output_file => $destination_bed,
+        report_names => 1,
+        maximum_distance => 0,
+    );
+    unless($merge_cmd->execute) {
+        $self->fatal_message('Failed to merge lifted and sorted bed.');
+    }
     return $destination_bed;
 }
 
