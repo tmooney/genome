@@ -161,8 +161,7 @@ sub lift_over {
 
     my $chain_file = $self->resource;
     unless($chain_file and -s $chain_file) {
-        $self->error_message('No chain file resource found for LiftOver.');
-        die $self->error_message;
+        $self->fatal_message('No chain file resource found for LiftOver.');
     }
     my $lifted_bed = Genome::Sys->create_temp_file_path();
     my $lift_over_cmd = Genome::Model::Tools::LiftOver->create(
@@ -171,7 +170,7 @@ sub lift_over {
         destination_file => $lifted_bed,
     );
     unless($lift_over_cmd->execute()) {
-        die $self->error_message('LiftOver failed: ' . $lift_over_cmd->error_message);
+        $self->fatal_message('LiftOver failed: ' . $lift_over_cmd->error_message);
     }
 
     my $sorted_bed = Genome::Sys->create_temp_file_path();
