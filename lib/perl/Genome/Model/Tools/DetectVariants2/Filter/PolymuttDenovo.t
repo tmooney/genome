@@ -103,10 +103,9 @@ ok($filter_command->execute(), 'executed filter command');
 $DB::single=1;
 ok(-s $output_vcf, "vcf output exists and has size");
 
-my $expected_text = `zcat $expected_vcf_file | grep -v '^##fileDate'`;
-my $test_text = `zcat $output_vcf | grep -v '^##fileDate'`;
-
-my $output_diff = Genome::Sys->diff_text_vs_text($expected_text, $test_text);
+#my $expected_text = `zcat $expected_vcf_file | grep -v '^##fileDate'`;
+#my $test_text = `zcat $output_vcf | grep -v '^##fileDate'`;
+#my $output_diff = Genome::Sys->diff_text_vs_text($expected_text, $test_text);
 #ok(!$output_diff, 'output file matches expected result')
 #    or diag("diff:\n" . $output_diff);
 }
